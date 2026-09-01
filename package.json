@@ -1,0 +1,18 @@
+{
+  "name": "noirly-ui-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noirly-dev/noirly-ui.git"
+  },
+  "scripts": {
+    "build": "pnpm --filter @noirly-dev/ui build",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.14.0"
+}
