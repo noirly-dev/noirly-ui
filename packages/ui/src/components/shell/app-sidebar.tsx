@@ -15,7 +15,7 @@ export type AppNavItem = {
 
 export type AppSidebarProps = {
   brand?: ReactNode;
-  /** Scrollable region between brand and primary nav (workspace lists, rails, etc.). */
+  /** Extra sidebar content above primary nav (workspace lists, search, etc.). */
   children?: ReactNode;
   items: AppNavItem[];
   footer?: ReactNode;
@@ -43,7 +43,7 @@ export function AppSidebar({
   return (
     <aside
       className={cn(
-        "flex h-dvh min-h-dvh w-[260px] shrink-0 flex-col overflow-hidden border-r border-[var(--hairline)] bg-[var(--surface)]/80 backdrop-blur-xl lg:flex",
+        "flex h-dvh min-h-dvh w-[260px] shrink-0 flex-col overflow-hidden border-r border-[var(--hairline)] bg-[var(--surface)]/80 backdrop-blur-xl",
         className,
       )}
     >
@@ -53,34 +53,36 @@ export function AppSidebar({
         </div>
       ) : null}
 
-      {children ? (
-        <div className={cn("min-h-0 shrink-0 overflow-y-auto border-b border-[var(--hairline)]", sectionClass)}>
-          {children}
-        </div>
-      ) : null}
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
+        {children ? (
+          <div className={cn("shrink-0 border-b border-[var(--hairline)]", sectionClass)}>
+            {children}
+          </div>
+        ) : null}
 
-      <nav className={cn("flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto", sectionClass)}>
-        {items.map(({ href, label, icon: Icon, match }) => {
-          const active = isActive(pathname, href, match);
-          return (
-            <Link
-              key={href}
-              href={href}
-              onClick={onNavigate}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
-                active
-                  ? "bg-[var(--accent-soft)] text-[var(--accent)]"
-                  : "text-[var(--muted-foreground)] hover:bg-[var(--surface-2)] hover:text-[var(--foreground)]",
-              )}
-            >
-              {Icon ? <Icon size={16} className="shrink-0" /> : null}
-              <span className="truncate">{label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+        <nav className={cn("flex flex-col gap-1", sectionClass, children ? "pt-0" : "")}>
+          {items.map(({ href, label, icon: Icon, match }) => {
+            const active = isActive(pathname, href, match);
+            return (
+              <Link
+                key={href}
+                href={href}
+                onClick={onNavigate}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
+                  active
+                    ? "bg-[var(--accent-soft)] text-[var(--accent)]"
+                    : "text-[var(--muted-foreground)] hover:bg-[var(--surface-2)] hover:text-[var(--foreground)]",
+                )}
+              >
+                {Icon ? <Icon size={16} className="shrink-0" /> : null}
+                <span className="truncate">{label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
 
       {footer ? (
         <div className={cn("mt-auto shrink-0 border-t border-[var(--hairline)]", sectionClass)}>
