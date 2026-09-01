@@ -10,9 +10,17 @@ export type AppShellProps = {
   header?: Omit<AppHeaderProps, "onMenuClick">;
   children: ReactNode;
   className?: string;
+  /** Main content wrapper classes. Pass `p-0` to opt out of default layout for full-bleed views. */
+  contentClassName?: string;
 };
 
-export function AppShell({ sidebar, header, children, className }: AppShellProps) {
+export function AppShell({
+  sidebar,
+  header,
+  children,
+  className,
+  contentClassName,
+}: AppShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -37,7 +45,14 @@ export function AppShell({ sidebar, header, children, className }: AppShellProps
 
       <div className="flex min-h-dvh min-w-0 flex-1 flex-col">
         <AppHeader {...(header ?? {})} onMenuClick={() => setMobileOpen(true)} />
-        <main className="min-h-0 min-w-0 flex-1">{children}</main>
+        <main
+          className={cn(
+            "flex min-h-0 min-w-0 flex-1 flex-col",
+            contentClassName ?? "overflow-y-auto",
+          )}
+        >
+          {children}
+        </main>
       </div>
     </div>
   );

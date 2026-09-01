@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ComponentType, ReactNode } from "react";
 import { cn } from "../../lib/utils.js";
+import { SHELL_GUTTER_CLASS } from "./page-container.js";
 
 export type AppNavItem = {
   href: string;
@@ -14,6 +15,8 @@ export type AppNavItem = {
 
 export type AppSidebarProps = {
   brand?: ReactNode;
+  /** Scrollable region between brand and primary nav (workspace lists, rails, etc.). */
+  children?: ReactNode;
   items: AppNavItem[];
   footer?: ReactNode;
   className?: string;
@@ -25,19 +28,38 @@ function isActive(pathname: string, href: string, match: AppNavItem["match"] = "
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function AppSidebar({ brand, items, footer, className, onNavigate }: AppSidebarProps) {
+const sectionClass = cn(SHELL_GUTTER_CLASS, "py-4");
+
+export function AppSidebar({
+  brand,
+  children,
+  items,
+  footer,
+  className,
+  onNavigate,
+}: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
     <aside
       className={cn(
-        "flex h-dvh min-h-dvh w-[260px] shrink-0 flex-col border-r border-[var(--hairline)] bg-[var(--surface)]/80 backdrop-blur-xl lg:flex",
+        "flex h-dvh min-h-dvh w-[260px] shrink-0 flex-col overflow-hidden border-r border-[var(--hairline)] bg-[var(--surface)]/80 backdrop-blur-xl lg:flex",
         className,
       )}
     >
-      {brand ? <div className="border-b border-[var(--hairline)] p-6">{brand}</div> : null}
+      {brand ? (
+        <div className={cn("shrink-0 border-b border-[var(--hairline)]", sectionClass)}>
+          {brand}
+        </div>
+      ) : null}
 
-      <nav className="flex flex-1 flex-col gap-1 p-4">
+      {children ? (
+        <div className={cn("min-h-0 shrink-0 overflow-y-auto border-b border-[var(--hairline)]", sectionClass)}>
+          {children}
+        </div>
+      ) : null}
+
+      <nav className={cn("flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto", sectionClass)}>
         {items.map(({ href, label, icon: Icon, match }) => {
           const active = isActive(pathname, href, match);
           return (
@@ -47,20 +69,24 @@ export function AppSidebar({ brand, items, footer, className, onNavigate }: AppS
               onClick={onNavigate}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-3 text-sm transition-colors sm:py-2.5",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
                 active
                   ? "bg-[var(--accent-soft)] text-[var(--accent)]"
                   : "text-[var(--muted-foreground)] hover:bg-[var(--surface-2)] hover:text-[var(--foreground)]",
               )}
             >
-              {Icon ? <Icon size={16} /> : null}
-              {label}
+              {Icon ? <Icon size={16} className="shrink-0" /> : null}
+              <span className="truncate">{label}</span>
             </Link>
           );
         })}
       </nav>
 
-      {footer ? <div className="mt-auto p-4">{footer}</div> : null}
+      {footer ? (
+        <div className={cn("mt-auto shrink-0 border-t border-[var(--hairline)]", sectionClass)}>
+          {footer}
+        </div>
+      ) : null}
     </aside>
   );
 }

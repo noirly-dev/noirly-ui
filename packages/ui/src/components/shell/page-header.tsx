@@ -11,26 +11,27 @@ export type PageHeaderProps = {
 
 export function PageHeader({ kicker, title, lead, action, className }: PageHeaderProps) {
   return (
-    <div className={cn("flex flex-wrap items-end justify-between gap-4", className)}>
-      <div className="min-w-0">
-        {kicker ? (
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
-            {kicker}
-          </p>
-        ) : null}
-        <h1
-          className={cn(
-            "font-display text-2xl font-semibold tracking-tight md:text-3xl",
-            kicker ? "mt-2" : undefined,
-          )}
-        >
-          {title}
-        </h1>
-        {lead ? (
-          <p className="mt-2 max-w-xl text-sm text-[var(--muted-foreground)]">{lead}</p>
+    <div className={cn("flex flex-col gap-4", className)}>
+      {kicker ? (
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[var(--muted-foreground)]">
+          {kicker}
+        </p>
+      ) : null}
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <h1 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
+            {title}
+          </h1>
+          {lead ? (
+            <p className="mt-2 max-w-xl text-sm text-[var(--muted-foreground)]">{lead}</p>
+          ) : null}
+        </div>
+        {action ? (
+          <div className="flex w-full shrink-0 flex-wrap items-center gap-3 sm:w-auto sm:justify-end">
+            {action}
+          </div>
         ) : null}
       </div>
-      {action ? <div className="flex flex-wrap items-center gap-3">{action}</div> : null}
     </div>
   );
 }

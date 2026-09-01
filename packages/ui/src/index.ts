@@ -10,7 +10,6 @@ export {
   type ThemePalette,
   type ThemeDefinition,
 } from "./themes/index.js";
-
 export { ThemeStyles } from "./themes/ThemeStyles.js";
 
 export { fraunces, hanken, jetbrains, noirlyFontClassName } from "./fonts/index.js";
@@ -22,7 +21,8 @@ export {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent, } from "./components/ui/card.js";
+  CardContent,
+} from "./components/ui/card.js";
 export { Input } from "./components/ui/input.js";
 export { Textarea } from "./components/ui/textarea.js";
 export { Label } from "./components/ui/label.js";
@@ -30,12 +30,18 @@ export { Switch } from "./components/ui/switch.js";
 export { Dialog } from "./components/ui/dialog.js";
 
 export {
+  PageContainer,
+  SHELL_GUTTER_CLASS,
+  type PageContainerProps,
+} from "./components/shell/page-container.js";
+export { SidebarBrand, type SidebarBrandProps } from "./components/shell/sidebar-brand.js";
+export { PageHeader, type PageHeaderProps } from "./components/shell/page-header.js";
+export { AppHeader, type AppHeaderProps } from "./components/shell/app-header.js";
+export {
   AppSidebar,
   type AppNavItem,
   type AppSidebarProps,
 } from "./components/shell/app-sidebar.js";
-export { AppHeader, type AppHeaderProps } from "./components/shell/app-header.js";
 export { AppShell, type AppShellProps } from "./components/shell/app-shell.js";
-export { PageHeader, type PageHeaderProps } from "./components/shell/page-header.js";
 
 export { AuthShell, type AuthShellProps } from "./components/auth/auth-shell.js";
