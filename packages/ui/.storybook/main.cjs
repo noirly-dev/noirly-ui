@@ -9,6 +9,7 @@ const config = {
     options: {},
   },
   async viteFinal(config) {
+    config.base = process.env.STORYBOOK_BASE_PATH || "/";
     config.resolve = config.resolve ?? {};
     config.resolve.alias = {
       ...config.resolve.alias,
