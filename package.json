@@ -9,7 +9,9 @@
   },
   "scripts": {
     "build": "pnpm --filter @noirly-dev/ui build",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "storybook": "pnpm --filter @noirly-dev/ui storybook",
+    "build-storybook": "pnpm --filter @noirly-dev/ui build-storybook"
   },
   "engines": {
     "node": ">=20"
