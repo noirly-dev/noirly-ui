@@ -11,6 +11,17 @@ export {
   type ThemeDefinition,
 } from "./themes/index.js";
 export { ThemeStyles } from "./themes/ThemeStyles.js";
+export { NoirlyHead, type NoirlyHeadProps } from "./themes/NoirlyHead.js";
+export {
+  PALETTE_STORAGE_KEY,
+  THEME_STYLE_ID,
+  getThemeCssMap,
+  resolvePaletteId,
+  themeCssFor,
+  applyPalette,
+  readStoredPalette,
+  buildThemeBootScript,
+} from "./themes/palette.js";
 
 export { fraunces, hanken, jetbrains, noirlyFontClassName } from "./fonts/index.js";
 

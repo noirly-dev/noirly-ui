@@ -3,33 +3,27 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../../lib/utils.js";
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] disabled:pointer-events-none disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        default:
-          "bg-[var(--accent)] text-[var(--accent-ink)] shadow-[var(--elev-1)] hover:brightness-110",
-        secondary:
-          "bg-[var(--surface-2)] text-[var(--foreground)] border border-[var(--hairline)] hover:bg-[var(--surface)]",
-        ghost:
-          "text-[var(--muted-foreground)] hover:bg-[var(--surface-2)] hover:text-[var(--foreground)]",
-        destructive:
-          "bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20",
-      },
-      size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-8 rounded-lg px-3 text-xs",
-        lg: "h-11 rounded-xl px-6",
-        icon: "h-10 w-10",
-      },
+const buttonVariants = cva("btn", {
+  variants: {
+    variant: {
+      default: "btn-solid",
+      secondary: "btn-ghost",
+      ghost: "btn-ghost",
+      destructive:
+        "rounded-full border border-red-500/20 bg-red-500/10 font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-red-400 hover:bg-red-500/20",
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
+    size: {
+      default: "",
+      sm: "btn-sm",
+      lg: "btn-lg",
+      icon: "btn-icon",
     },
   },
-);
+  defaultVariants: {
+    variant: "default",
+    size: "default",
+  },
+});
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
