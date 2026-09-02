@@ -35,7 +35,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "prepublishOnly": "pnpm run build",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o storybook-static"
+    "build-storybook": "storybook build -o ../../storybook-static"
   },
   "repository": {
     "type": "git",
