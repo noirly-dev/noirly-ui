@@ -402,3 +402,337 @@
   outline: 2px solid var(--text);
   outline-offset: 2px;
 }
+
+/* ==========================================================================
+   Typography — display scale
+   Fraunces for display, Hanken for prose, JetBrains for labels. `.display-md`
+   lives further up with the rest of the original primitives.
+   ========================================================================== */
+
+.display-xl {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-size: clamp(2.5rem, 6.4vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.display-lg {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-size: clamp(2rem, 4.6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.lede {
+  font-size: clamp(1rem, 1.35vw, 1.1875rem);
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.copy {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.numeral {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+/* Outlined display text — a graphic flourish; use it once per page. */
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.25px color-mix(in srgb, var(--text) 42%, transparent);
+  paint-order: stroke fill;
+}
+
+/* ==========================================================================
+   Surface effects
+   ========================================================================== */
+
+/* Scroll-highlight ring for nested cards — inset so an overflow clip cannot
+   square off the corners. */
+.accent-ring-inset {
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+/* Cursor-tracked spotlight; driven by --mx/--my written by <SpotlightCard>. */
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out-expo);
+  background: radial-gradient(
+    22rem circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--text) 10%, transparent),
+    transparent 65%
+  );
+}
+
+.spotlight:hover::before,
+.spotlight:focus-within::before {
+  opacity: 1;
+}
+
+/* Marquee track (Framer Motion drives the transform; this only masks edges). */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Fading hairline that separates one section band from the next. */
+.section-rule::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hairline-strong) 22%,
+    var(--hairline-strong) 78%,
+    transparent
+  );
+}
+
+/* Anchored sections clear the sticky header. Apps with a shorter bar override
+   --header-offset on :root. */
+section[id] {
+  scroll-margin-top: var(--header-offset, 6.5rem);
+}
+
+/* ==========================================================================
+   Ambient page background — <SiteBackground>
+   Five cheap, GPU-friendly layers instead of one flat --bg from header to
+   footer: a lit wash, a masked grid, a slow accent aurora, a vignette and
+   grain. Every value derives from the active theme via color-mix, so all
+   seven palettes and both schemes work without per-theme edits.
+   ========================================================================== */
+
+:root {
+  --bgfx-beam: color-mix(in srgb, var(--accent) 7%, transparent);
+  --bgfx-blob-accent: color-mix(in srgb, var(--accent) 10%, transparent);
+  --bgfx-blob-accent-soft: color-mix(in srgb, var(--accent) 6%, transparent);
+  --bgfx-blob-neutral: color-mix(in srgb, var(--text) 6%, transparent);
+  --bgfx-grid-line: color-mix(in srgb, var(--text) 5.5%, transparent);
+  --bgfx-grid-size: 76px;
+  --bgfx-vignette: color-mix(in srgb, var(--bg-deep) 32%, transparent);
+  --bgfx-grain: 0.03;
+  --bgfx-wash-top: color-mix(in srgb, var(--surface) 85%, var(--bg));
+  --bgfx-wash-bottom: color-mix(in srgb, var(--bg-deep) 70%, var(--bg));
+}
+
+.dark {
+  --bgfx-beam: color-mix(in srgb, var(--accent) 9%, transparent);
+  --bgfx-blob-accent: color-mix(in srgb, var(--accent) 14%, transparent);
+  --bgfx-blob-accent-soft: color-mix(in srgb, var(--accent) 8%, transparent);
+  --bgfx-blob-neutral: color-mix(in srgb, var(--text) 8%, transparent);
+  --bgfx-grid-line: color-mix(in srgb, var(--text) 7%, transparent);
+  --bgfx-vignette: color-mix(in srgb, var(--bg-deep) 62%, transparent);
+  --bgfx-grain: 0.045;
+  --bgfx-wash-top: color-mix(in srgb, var(--text) 5%, var(--bg));
+  --bgfx-wash-bottom: var(--bg-deep);
+}
+
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  /* Isolate the stack so the drifting blobs never invalidate page layout. */
+  contain: layout paint style;
+}
+
+.site-bg > * {
+  position: absolute;
+  inset: 0;
+}
+
+/* Overhead key light at the top, shadow gathering at the bottom edge. */
+.site-bg-wash {
+  background:
+    radial-gradient(78% 42% at 50% -6%, var(--bgfx-beam), transparent 72%),
+    linear-gradient(
+      180deg,
+      var(--bgfx-wash-top) 0%,
+      var(--bg) 38%,
+      var(--bg) 64%,
+      var(--bgfx-wash-bottom) 100%
+    );
+}
+
+/* Blueprint mesh, faded out before it reaches the content edges. */
+.site-bg-grid {
+  background-image:
+    linear-gradient(to right, var(--bgfx-grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--bgfx-grid-line) 1px, transparent 1px);
+  background-size: var(--bgfx-grid-size) var(--bgfx-grid-size);
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(
+    112% 78% at 50% 0%,
+    #000 0%,
+    color-mix(in srgb, #000 45%, transparent) 45%,
+    transparent 76%
+  );
+  mask-image: radial-gradient(
+    112% 78% at 50% 0%,
+    #000 0%,
+    color-mix(in srgb, #000 45%, transparent) 45%,
+    transparent 76%
+  );
+}
+
+/* Slow accent aurora. Transform-only animation — no layout, no filters. */
+.site-bg-blob {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+}
+
+.site-bg-blob-a {
+  top: -34vh;
+  left: -24vw;
+  width: 66vw;
+  height: 66vw;
+  min-width: 30rem;
+  min-height: 30rem;
+  background: radial-gradient(closest-side, var(--bgfx-blob-accent), transparent 100%);
+  animation: bgfx-drift-a 34s var(--ease-in-out-quint) infinite;
+}
+
+.site-bg-blob-b {
+  top: 22vh;
+  right: -20vw;
+  width: 52vw;
+  height: 52vw;
+  min-width: 26rem;
+  min-height: 26rem;
+  background: radial-gradient(closest-side, var(--bgfx-blob-neutral), transparent 100%);
+  animation: bgfx-drift-b 44s var(--ease-in-out-quint) infinite;
+}
+
+.site-bg-blob-c {
+  bottom: -30vh;
+  left: 24vw;
+  width: 56vw;
+  height: 56vw;
+  min-width: 26rem;
+  min-height: 26rem;
+  background: radial-gradient(
+    closest-side,
+    var(--bgfx-blob-accent-soft),
+    transparent 100%
+  );
+  animation: bgfx-drift-c 52s var(--ease-in-out-quint) infinite;
+}
+
+@keyframes bgfx-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(7vw, 5vh, 0) scale(1.14);
+  }
+}
+
+@keyframes bgfx-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(-6vw, -7vh, 0) scale(1);
+  }
+}
+
+@keyframes bgfx-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-8vw, 4vh, 0) scale(1.1);
+  }
+}
+
+/* Pulls focus back to the centre column. */
+.site-bg-vignette {
+  background: radial-gradient(
+    118% 76% at 50% 42%,
+    transparent 42%,
+    var(--bgfx-vignette) 100%
+  );
+}
+
+/* Same noise as .grain, page-wide — stops the large gradients from banding. */
+.site-bg-grain {
+  opacity: var(--bgfx-grain);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   Mobile — responsive layout + CLS guards
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  section[id] {
+    scroll-margin-top: var(--header-offset-sm, 5rem);
+  }
+
+  .display-xl {
+    font-size: clamp(2rem, 10.5vw, 2.85rem);
+    line-height: 1.05;
+  }
+
+  .display-lg {
+    font-size: clamp(1.75rem, 8vw, 2.35rem);
+  }
+
+  .shell {
+    padding-inline: 1rem;
+  }
+
+  .btn {
+    white-space: normal;
+    text-align: center;
+    min-height: 2.75rem;
+    padding-inline: 1.1rem;
+  }
+
+  .lede {
+    max-width: none;
+    font-size: 1rem;
+  }
+
+  /* Smaller ambient blobs — less paint work on mobile GPUs. */
+  .site-bg-blob-a,
+  .site-bg-blob-b,
+  .site-bg-blob-c {
+    min-width: 0;
+    min-height: 0;
+  }
+}

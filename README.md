@@ -19,15 +19,23 @@ Configure the `@noirly-dev` scope in `.npmrc`:
 pnpm add @noirly-dev/ui
 ```
 
-Peer dependencies: `react`, `react-dom`, `next` (>=16), `tailwindcss` (^4), `lucide-react`.
+Peer dependencies: `react`, `react-dom`, `next` (>=16), `tailwindcss` (^4).
+Optional: `lucide-react`, `framer-motion` (for `/motion`), `lenis` (for `/scroll`).
 
 ### Usage
 
 ```css
 /* app/globals.css */
 @import "tailwindcss";
+@source "../node_modules/@noirly-dev/ui/dist";
 @import "@noirly-dev/ui/styles.css";
+@import "@noirly-dev/ui/effects.css";
+@import "@noirly-dev/ui/transitions.css";
 ```
+
+See [DESIGN-SYSTEM.md](./DESIGN-SYSTEM.md) for the full token, type, colour and
+motion reference, and for `<NoirlyExperience>` — the presentation layer in one
+wrapper.
 
 ```tsx
 import { ThemeStyles, noirlyFontClassName, Button, AppShell } from "@noirly-dev/ui";
@@ -52,6 +60,7 @@ Next.js apps should set `transpilePackages: ["@noirly-dev/ui"]` and use `next bu
 pnpm install
 pnpm build
 pnpm typecheck
+pnpm themes:verify   # WCAG AA gate for all seven palettes (needs a build first)
 ```
 
 ## Publish

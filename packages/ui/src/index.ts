@@ -56,3 +56,31 @@ export {
 export { AppShell, type AppShellProps } from "./components/shell/app-shell.js";
 
 export { AuthShell, type AuthShellProps } from "./components/auth/auth-shell.js";
+
+/* --------------------------- Presentation layer ---------------------------
+ * Dependency-free half of the portfolio design system. Anything needing
+ * framer-motion lives in `@noirly-dev/ui/motion`, anything needing lenis in
+ * `@noirly-dev/ui/scroll`, and the assembled wrapper in
+ * `@noirly-dev/ui/experience`.
+ * -------------------------------------------------------------------------- */
+
+export { SiteBackground } from "./components/fx/site-background.js";
+export { CustomCursor } from "./components/fx/custom-cursor.js";
+export {
+  PageTransition,
+  type PageTransitionProps,
+} from "./components/fx/page-transition.js";
+
+export {
+  useCoarsePointer,
+  useNarrowViewport,
+  useInstantEntrance,
+} from "./hooks/use-coarse-pointer.js";
+export { useCachedRect } from "./hooks/use-cached-rect.js";
+export { useSpotlight } from "./hooks/use-spotlight.js";
+export { useCursor, type Cursor, type CursorVariant } from "./hooks/use-cursor.js";
+export {
+  useTransitionState,
+  setTransitionPhase,
+  type TransitionPhase,
+} from "./hooks/use-transition-state.js";

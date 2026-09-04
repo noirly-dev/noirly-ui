@@ -29,7 +29,10 @@ export function AuthShell({
   align = "center",
 }: AuthShellProps) {
   return (
-    <div
+    // <main>, not <div>: this is the page's primary content region, so it
+    // earns the landmark — and it is what `effects.css` hangs the pointer
+    // spotlight off, the same as <AppShell>.
+    <main
       className={cn(
         "relative flex min-h-dvh flex-col px-4 py-8 sm:py-12",
         align === "center" ? "items-center justify-center" : "items-center justify-start",
@@ -54,6 +57,6 @@ export function AuthShell({
           <div className="mt-6 text-center text-sm text-[var(--muted-foreground)]">{footer}</div>
         ) : null}
       </div>
-    </div>
+    </main>
   );
 }

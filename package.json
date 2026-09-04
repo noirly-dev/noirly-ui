@@ -11,7 +11,8 @@
     "build": "pnpm --filter @noirly-dev/ui build",
     "typecheck": "pnpm -r typecheck",
     "storybook": "pnpm --filter @noirly-dev/ui storybook",
-    "build-storybook": "pnpm --filter @noirly-dev/ui build-storybook"
+    "build-storybook": "pnpm --filter @noirly-dev/ui build-storybook",
+    "themes:verify": "node scripts/verify-contrast.mjs"
   },
   "engines": {
     "node": ">=20"
