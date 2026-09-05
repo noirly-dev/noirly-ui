@@ -156,9 +156,13 @@
   backdrop-filter: blur(8px);
 }
 
+/* Raises a `.surface` to elev-2. The inset hairline is restated because
+   box-shadow does not merge across rules — omitting it here silently dropped
+   the edge that `.surface` had just drawn. */
 .surface-lift {
   box-shadow:
-    var(--card-sheen),
+    inset 0 0 0 1px var(--hairline),
+    var(--card-sheen, none),
     var(--elev-2);
 }
 
