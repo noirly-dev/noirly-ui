@@ -26,19 +26,31 @@ export {
 export { fraunces, hanken, jetbrains, noirlyFontClassName } from "./fonts/index.js";
 
 export { Button, type ButtonProps } from "./components/ui/button.js";
-export { Badge } from "./components/ui/badge.js";
+export { Badge, type BadgeProps, type BadgeTone } from "./components/ui/badge.js";
 export {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
+  CardFooter,
 } from "./components/ui/card.js";
-export { Input } from "./components/ui/input.js";
-export { Textarea } from "./components/ui/textarea.js";
+export { Input, type InputProps } from "./components/ui/input.js";
+export { Textarea, type TextareaProps } from "./components/ui/textarea.js";
 export { Label } from "./components/ui/label.js";
 export { Switch } from "./components/ui/switch.js";
 export { Dialog } from "./components/ui/dialog.js";
+export { FormField, type FormFieldProps } from "./components/ui/field.js";
+export { Stat, StatGroup, StatCell, type StatProps, type StatTrend } from "./components/ui/stat.js";
+export {
+  DataTable,
+  type DataTableProps,
+  type DataTableColumn,
+} from "./components/ui/data-table.js";
+export { EmptyState, type EmptyStateProps } from "./components/ui/empty-state.js";
+export { Skeleton, SkeletonText, SkeletonRows } from "./components/ui/skeleton.js";
+export { Tabs, type TabsProps, type TabItem } from "./components/ui/tabs.js";
+export { Avatar, Kbd, Separator, type AvatarProps } from "./components/ui/avatar.js";
 
 export {
   PageContainer,
@@ -47,11 +59,12 @@ export {
 } from "./components/shell/page-container.js";
 export { SidebarBrand, type SidebarBrandProps } from "./components/shell/sidebar-brand.js";
 export { PageHeader, type PageHeaderProps } from "./components/shell/page-header.js";
-export { AppHeader, type AppHeaderProps } from "./components/shell/app-header.js";
+export { AppHeader, type AppHeaderProps, type Crumb } from "./components/shell/app-header.js";
 export {
   AppSidebar,
   type AppNavItem,
   type AppSidebarProps,
+  type AppNavGroup,
 } from "./components/shell/app-sidebar.js";
 export { AppShell, type AppShellProps } from "./components/shell/app-shell.js";
 

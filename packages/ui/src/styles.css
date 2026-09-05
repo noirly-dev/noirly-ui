@@ -12,6 +12,8 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -735,4 +737,552 @@ section[id] {
     min-width: 0;
     min-height: 0;
   }
+}
+
+/* ==========================================================================
+   PRODUCT LAYER
+   The marketing primitives above are built for a page you scroll through
+   once. These are for a surface you sit in for an hour: denser, quieter, and
+   sized for data rather than for a hero.
+
+   The rules of the house style, so a hand-rolled component can match:
+     1. Boxes are a last resort. Separate with a hairline rule, or with space.
+     2. Nothing gets both a border and a shadow. `.surface` already paints an
+        inset hairline, a gradient and a sheen — adding `border` on top of it
+        reads as muddy, and a Tailwind `shadow-*` utility silently replaces the
+        whole stack.
+     3. Accent is light, not paint. It glows on focus and marks what is
+        current; it does not fill large areas.
+     4. Numbers are mono and tabular, always. Labels are mono and uppercase.
+        Titles are Fraunces. Prose is Hanken.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Focus — a glow rather than a hard ring.
+   A 2px outline reads as a browser default; two stacked shadows read as the
+   surface being lit. Applied via .field and .focusable so it can sit on the
+   element that actually looks focused (often a wrapper, not the input).
+   -------------------------------------------------------------------------- */
+
+:root {
+  --focus-glow:
+    0 0 0 1px var(--accent),
+    0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+  --row-h: 2.25rem;
+}
+
+.focusable:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-glow);
+}
+
+/* --------------------------------------------------------------------------
+   Interactive surface — the card that responds.
+   Pairs with `.surface`; never add a border alongside it.
+   -------------------------------------------------------------------------- */
+
+.surface-interactive {
+  transition:
+    box-shadow var(--dur-base) var(--ease-out-expo),
+    transform var(--dur-base) var(--ease-out-expo);
+}
+
+.surface-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 1px var(--hairline-strong),
+    var(--card-sheen, none),
+    var(--elev-2);
+}
+
+.surface-interactive:active {
+  transform: translateY(0);
+  transition-duration: var(--dur-fast);
+}
+
+/* --------------------------------------------------------------------------
+   Rules — the primary separator in this system.
+   -------------------------------------------------------------------------- */
+
+.rule {
+  border: 0;
+  height: 1px;
+  background: var(--hairline);
+}
+
+.rule-strong {
+  border: 0;
+  height: 1px;
+  background: var(--hairline-strong);
+}
+
+/* Fades at both ends. For separating bands inside a panel. */
+.rule-soft {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hairline-strong) 15%,
+    var(--hairline-strong) 85%,
+    transparent
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Product typography
+   Smaller and tighter than the marketing display scale, but the same faces so
+   an app still reads as a sibling of the site.
+   -------------------------------------------------------------------------- */
+
+.page-title {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-size: clamp(1.625rem, 2.6vw, 2.125rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.section-title {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+/* Metadata, IDs, timestamps, counts. */
+.meta {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Navigation
+   The active row is marked by a rule on the leading edge, not by a filled
+   pill. Fills at this size close up the whitespace the layout depends on.
+   -------------------------------------------------------------------------- */
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: var(--row-h);
+  padding: 0.375rem 0.625rem 0.375rem 0.875rem;
+  border-radius: var(--r-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition:
+    color var(--dur-fast) var(--ease-out-expo),
+    background-color var(--dur-fast) var(--ease-out-expo);
+}
+
+.nav-item:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+
+.nav-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 2px;
+  height: 0;
+  border-radius: 1px;
+  background: var(--accent);
+  transform: translateY(-50%);
+  transition: height var(--dur-base) var(--ease-out-expo);
+}
+
+.nav-item[aria-current="page"] {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.nav-item[aria-current="page"]::before {
+  height: 1.125rem;
+}
+
+.nav-group-label {
+  padding: 0 0.875rem;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+
+/* --------------------------------------------------------------------------
+   Fields
+   The glow lives on the wrapper so a field with a leading icon or a trailing
+   affordance lights up as one object.
+   -------------------------------------------------------------------------- */
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.5rem;
+  padding-inline: 0.75rem;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--text) 3%, transparent);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  color: var(--text);
+  transition:
+    box-shadow var(--dur-fast) var(--ease-out-expo),
+    background-color var(--dur-fast) var(--ease-out-expo);
+}
+
+.field:hover:not(:focus-within) {
+  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+}
+
+.field:focus-within {
+  background: var(--surface);
+  box-shadow:
+    inset 0 0 0 1px var(--accent),
+    var(--focus-glow);
+}
+
+/* The bare control inside .field — the wrapper owns every visual. */
+.field-control {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: inherit;
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.field-control::placeholder {
+  color: var(--text-muted);
+}
+
+.field-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.field[data-invalid="true"] {
+  box-shadow: inset 0 0 0 1px var(--destructive);
+}
+
+.field[data-invalid="true"]:focus-within {
+  box-shadow:
+    inset 0 0 0 1px var(--destructive),
+    0 0 0 4px color-mix(in srgb, var(--destructive) 14%, transparent);
+}
+
+.field-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.field-error {
+  font-size: 0.75rem;
+  color: var(--destructive);
+}
+
+/* --------------------------------------------------------------------------
+   Stats
+   The one place a big number is allowed. Fraunces at display size, mono for
+   the label and the delta.
+   -------------------------------------------------------------------------- */
+
+.stat-label {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  font-family: var(--font-fraunces), ui-serif, Georgia, serif;
+  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.stat-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.stat-delta[data-trend="up"] {
+  color: var(--positive);
+}
+
+.stat-delta[data-trend="down"] {
+  color: var(--negative);
+}
+
+.stat-delta[data-trend="flat"] {
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Data table
+   Hairlines between rows, no zebra, no vertical grid. The header is a mono
+   label row, not a filled bar.
+   -------------------------------------------------------------------------- */
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.8125rem;
+}
+
+.data-table thead th {
+  padding: 0.5rem 0.875rem;
+  text-align: left;
+  white-space: nowrap;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--hairline-strong);
+}
+
+.data-table tbody td {
+  padding: 0.75rem 0.875rem;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.data-table tbody tr {
+  transition: background-color var(--dur-fast) var(--ease-out-expo);
+}
+
+.data-table tbody tr:hover {
+  background: color-mix(in srgb, var(--text) 3%, transparent);
+}
+
+/* Right-align and tabularise anything numeric. */
+.data-table [data-numeric] {
+  text-align: right;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+/* The identifying column in a row. */
+.data-table [data-primary] {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   Tabs — underline, not a segmented control.
+   -------------------------------------------------------------------------- */
+
+.tab-list {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.tab {
+  position: relative;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease-out-expo);
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0.5rem;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition:
+    opacity var(--dur-base) var(--ease-out-expo),
+    transform var(--dur-base) var(--ease-out-expo);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--text);
+}
+
+.tab[aria-selected="true"]::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* --------------------------------------------------------------------------
+   Small parts
+   -------------------------------------------------------------------------- */
+
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  padding-inline: 0.3125rem;
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Status pill. Quieter than .chip — for state, not for tags. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.1875rem 0.5rem;
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--text) 5%, transparent);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.pill[data-tone="accent"] {
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--accent);
+}
+
+.pill[data-tone="positive"] {
+  background: color-mix(in srgb, var(--positive) 12%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--positive) 30%, transparent);
+  color: var(--positive);
+}
+
+.pill[data-tone="negative"] {
+  background: color-mix(in srgb, var(--negative) 12%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--negative) 30%, transparent);
+  color: var(--negative);
+}
+
+/* --------------------------------------------------------------------------
+   Skeleton — a slow sheen, not a pulse.
+   A pulsing opacity draws the eye; a sweep reads as loading and then leaves.
+   -------------------------------------------------------------------------- */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--text) 7%, transparent),
+    transparent
+  );
+  animation: skeleton-sweep 1.6s var(--ease-in-out-quint) infinite;
+}
+
+@keyframes skeleton-sweep {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Empty state
+   -------------------------------------------------------------------------- */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+  text-align: center;
+}
+
+.empty-state-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  color: var(--accent);
 }

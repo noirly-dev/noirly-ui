@@ -1,17 +1,32 @@
 import * as React from "react";
 import { cn } from "../../lib/utils.js";
 
+export interface TextareaProps extends React.ComponentProps<"textarea"> {
+  invalid?: boolean;
+  wrapperClassName?: string;
+}
+
 export function Textarea({
   className,
+  wrapperClassName,
+  invalid,
   ...props
-}: React.ComponentProps<"textarea">) {
+}: TextareaProps) {
   return (
-    <textarea
-      className={cn(
-        "flex min-h-[100px] w-full rounded-xl border border-[var(--hairline)] bg-[var(--surface)] px-3 py-2 text-base text-[var(--foreground)] sm:text-sm placeholder:text-[var(--muted-foreground)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] disabled:cursor-not-allowed disabled:opacity-50",
-        className,
-      )}
-      {...props}
-    />
+    <div
+      // items-start, not the field default of center: a growing textarea should
+      // stay pinned to the top of its wrapper rather than drifting downward.
+      className={cn("field items-start py-2", wrapperClassName)}
+      data-invalid={invalid ? "true" : undefined}
+    >
+      <textarea
+        aria-invalid={invalid || undefined}
+        className={cn(
+          "field-control min-h-[6rem] resize-y py-0.5 leading-relaxed disabled:cursor-not-allowed disabled:opacity-50",
+          className,
+        )}
+        {...props}
+      />
+    </div>
   );
 }

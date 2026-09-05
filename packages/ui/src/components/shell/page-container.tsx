@@ -27,7 +27,9 @@ export function PageContainer({
   return (
     <div
       className={cn(
-        "mx-auto flex w-full flex-col gap-8 py-6 sm:py-8",
+        // Roomier than it was: the editorial look depends on the page having
+        // air above the title and between bands.
+        "mx-auto flex w-full flex-col gap-7 py-8 sm:py-10",
         SHELL_GUTTER_CLASS,
         sizeClass[size],
         className,

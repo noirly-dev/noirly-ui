@@ -120,6 +120,8 @@ export function buildThemeCss(theme: ThemeDefinition): string {
   --muted-foreground: var(--text-muted);
   --accent-foreground: var(--accent-ink);
   --destructive: #dc2626;
+  --positive: #0a7a45;
+  --negative: #a65f00;
   --border: var(--hairline);
   --input: var(--hairline-strong);
   --ring: var(--accent);
@@ -162,6 +164,8 @@ export function buildThemeCss(theme: ThemeDefinition): string {
   --muted-foreground: var(--text-muted);
   --accent-foreground: var(--accent-ink);
   --destructive: #f87171;
+  --positive: #7dd3a8;
+  --negative: #e8a87c;
   --border: var(--hairline);
   --input: var(--hairline-strong);
   --ring: var(--accent);
