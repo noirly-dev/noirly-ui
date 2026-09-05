@@ -8,11 +8,14 @@
     "url": "git+https://github.com/noirly-dev/noirly-ui.git"
   },
   "scripts": {
-    "build": "pnpm --filter @noirly-dev/ui build",
+    "build": "pnpm -r build",
     "typecheck": "pnpm -r typecheck",
     "storybook": "pnpm --filter @noirly-dev/ui storybook",
     "build-storybook": "pnpm --filter @noirly-dev/ui build-storybook",
-    "themes:verify": "node scripts/verify-contrast.mjs"
+    "themes:verify": "node scripts/verify-contrast.mjs",
+    "build:native": "pnpm --filter @noirly-dev/ui-native build",
+    "storybook:native": "pnpm --filter @noirly-dev/ui-native storybook",
+    "build-storybook:native": "pnpm --filter @noirly-dev/ui-native build-storybook"
   },
   "engines": {
     "node": ">=20"

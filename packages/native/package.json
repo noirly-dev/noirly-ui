@@ -1,0 +1,88 @@
+{
+  "name": "@noirly-dev/ui-native",
+  "version": "0.1.0",
+  "description": "Noirly design system for React Native — the same seven palettes as @noirly-dev/ui, rendered natively",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./theme": {
+      "types": "./dist/theme/index.d.ts",
+      "import": "./dist/theme/index.js",
+      "default": "./dist/theme/index.js"
+    },
+    "./navigation": {
+      "types": "./dist/theme/navigation.d.ts",
+      "import": "./dist/theme/navigation.js",
+      "default": "./dist/theme/navigation.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "pnpm run build",
+    "storybook": "storybook dev -p 7007 -c .storybook",
+    "build-storybook": "storybook build -c .storybook -o ../../storybook-native-static"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noirly-dev/noirly-ui.git",
+    "directory": "packages/native"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "dependencies": {
+    "@noirly-dev/ui": "workspace:*"
+  },
+  "peerDependencies": {
+    "@react-navigation/native": ">=7",
+    "react": ">=18",
+    "react-native": ">=0.83",
+    "react-native-gesture-handler": ">=2.20",
+    "react-native-reanimated": ">=4.5",
+    "react-native-safe-area-context": ">=5"
+  },
+  "peerDependenciesMeta": {
+    "@react-navigation/native": {
+      "optional": true
+    },
+    "react-native-gesture-handler": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@react-navigation/native": "^7.3.18",
+    "@storybook/react-native": "10.5.4",
+    "@storybook/react-native-web-vite": "^10.6.0",
+    "@types/react": "^19",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-native": "0.86.3",
+    "react-native-gesture-handler": "^3.2.1",
+    "react-native-reanimated": "4.5.1",
+    "react-native-safe-area-context": "5.8.0",
+    "react-native-web": "^0.21.2",
+    "react-native-worklets": "0.10.4",
+    "storybook": "^10.6.0",
+    "typescript": "^5",
+    "vite": "^8.2.2"
+  },
+  "keywords": [
+    "noirly",
+    "design-system",
+    "react-native"
+  ],
+  "license": "UNLICENSED"
+}

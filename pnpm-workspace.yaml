@@ -1,2 +1,7 @@
 packages:
-  - "packages/*"
+  - packages/*
+
+# esbuild ships a platform binary from its postinstall script; Vite (and so the
+# browser Storybook) cannot start without it.
+onlyBuiltDependencies:
+  - esbuild

@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "jsx": "react-jsx",
+    "lib": ["ES2022"],
+    "types": [],
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "verbatimModuleSyntax": false
+  },
+  "include": ["src"],
+  "exclude": ["**/*.stories.tsx", "**/*.stories.ts"]
+}
