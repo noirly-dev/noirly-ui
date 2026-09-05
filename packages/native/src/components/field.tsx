@@ -5,6 +5,7 @@ import {
   View,
   type StyleProp,
   type TextInputProps,
+  type TextStyle,
   type ViewStyle,
 } from "react-native";
 import { useTheme } from "../theme/provider";
@@ -15,7 +16,10 @@ export interface InputProps extends Omit<TextInputProps, "style"> {
   leading?: ReactNode;
   trailing?: ReactNode;
   invalid?: boolean;
+  /** Styles the field wrapper — the bordered box. */
   style?: StyleProp<ViewStyle>;
+  /** Styles the control itself. Needed to give a `multiline` field a height. */
+  inputStyle?: StyleProp<TextStyle>;
 }
 
 /**
@@ -34,6 +38,7 @@ export function Input({
   onFocus,
   onBlur,
   style,
+  inputStyle,
   ...props
 }: InputProps) {
   const tokens = useTheme();
@@ -51,6 +56,9 @@ export function Input({
           borderColor,
           borderRadius: tokens.radius.sm,
         },
+        // A multiline field grows downward, so its affixes and text must hang
+        // from the top instead of staying vertically centred.
+        props.multiline ? styles.fieldMultiline : null,
         style,
       ]}
     >
@@ -69,7 +77,7 @@ export function Input({
         // selectionColor is the caret and the selection highlight; without it
         // both fall back to the platform blue and break the palette.
         selectionColor={color.accent}
-        style={[styles.input, tokens.type.body, { color: color.text }]}
+        style={[styles.input, tokens.type.body, { color: color.text }, inputStyle]}
       />
       {trailing ? <View style={styles.affix}>{trailing}</View> : null}
     </View>
@@ -118,6 +126,10 @@ export function FormField({
 }
 
 const styles = StyleSheet.create({
+  fieldMultiline: {
+    alignItems: "flex-start",
+    paddingVertical: 10,
+  },
   field: {
     flexDirection: "row",
     alignItems: "center",
